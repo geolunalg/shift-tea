@@ -10,32 +10,33 @@ export type NewFacility = {
 export type AdminUser = Omit<User, "facilityId">;
 
 export async function createFacility(newFacility: Facility, newAdmin: AdminUser): Promise<NewFacility> {
+    return await db.transaction(async (tx) => {
+        const facilityEntry = await tx
+            .insert(facilities)
+            .values(newFacility)
+            .onConflictDoNothing()
+            .returning();
 
-    const facilityEntry = await db
-        .insert(facilities)
-        .values(newFacility)
-        .onConflictDoNothing()
-        .returning();
+        // lets verify the facility was created
+        const facilityObj = firstOrUndefined(facilityEntry);
+        if (!facilityObj) {
+            throw new Error("Failed to create facility");
+        }
 
-    // lets verify the facility was created
-    const facilityObj = firstOrUndefined(facilityEntry);
-    if (!facilityObj) {
-        throw new Error("Failed to create facility");
-    }
+        const newAdminUser: User = { ...newAdmin, facilityId: facilityObj.id };
 
-    const newAdminVals: User = { ...newAdmin, facilityId: facilityObj.id };
+        const userEntry = await tx
+            .insert(users)
+            .values(newAdminUser)
+            .onConflictDoNothing()
+            .returning();
 
-    const userEntry = await db
-        .insert(users)
-        .values(newAdminVals)
-        .onConflictDoNothing()
-        .returning();
+        // verify the user was created
+        const userObj = firstOrUndefined(userEntry);
+        if (!userObj) {
+            throw new Error("Failed to create user");
+        }
 
-    // verify the user was created
-    const userObj = firstOrUndefined(userEntry);
-    if (!userObj) {
-        throw new Error("Failed to create user");
-    }
-
-    return { facility: facilityObj, user: userObj };
+        return { facility: facilityObj, user: userObj };
+    });
 }
