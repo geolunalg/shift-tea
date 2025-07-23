@@ -5,6 +5,6 @@ export function checkServerReadiness(req: Request, res: Response): void {
     respondWithJSON(res, 200, { status: "ok" })
 }
 
-// export function registerFacility(req: Request, res: Response) {
-
-// }
+export function registerFacility(req: Request, res: Response) {
+    respondWithJSON(res, 200, { status: "ok", WIP: "wip" });
+}

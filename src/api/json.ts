@@ -1,7 +1,7 @@
 import { Response } from "express";
 
 
-export function respondWithJSON(res: Response, code: number, payload: any) {
+export function respondWithJSON(res: Response, code: number, payload: unknown) {
     if (typeof payload !== "object" && typeof payload !== "string") {
         throw new Error("Response payload must and object or a string");
     }
