@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
-import { respondWithJSON } from "./json.js";
-import { hashPassword } from "./auth.js";
-import { Facility, User, users } from "../db/schema.js";
-import { AdminUser, createFacility } from "../db/facilities.js";
-import { omitParams } from "../db/utils.js";
+import { respondWithJSON } from "@/api/json.js";
+import { hashPassword } from "@/api/auth.js";
+import { Facility, User, users } from "@/db/schema.js";
+import { AdminUser, createFacility } from "@/db/facilities.js";
+import { omitParams } from "@/db/utils.js";
 
 export function checkServerReadiness(req: Request, res: Response): void {
     respondWithJSON(res, 200, { status: "ok" })

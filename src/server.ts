@@ -1,7 +1,7 @@
 import express from 'express';
-import { config } from './config.js';
-import { LogResponses } from './api/middleware.js';
-import { checkServerReadiness, registerFacility } from './api/handler.js';
+import { config } from '@/config';
+import { LogResponses } from '@/api/middleware';
+import { checkServerReadiness, registerFacility } from '@/api/handler';
 
 
 const app = express();

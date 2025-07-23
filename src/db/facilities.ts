@@ -1,6 +1,6 @@
-import { db } from "./connection.js";
-import { User, Facility, facilities, users } from "./schema.js";
-import { firstOrUndefined, omitParams } from "./utils.js";
+import { db } from "@/db/connection";
+import { User, Facility, facilities, users } from "@/db/schema";
+import { firstOrUndefined, omitParams } from "@/db/utils";
 
 
 export type NewFacility = {
