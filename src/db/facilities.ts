@@ -1,3 +1,4 @@
+import { BadRequestError } from "@/api/errors";
 import { db } from "@/db/connection";
 import { User, Facility, facilities, users } from "@/db/schema";
 import { firstOrUndefined, omitParams } from "@/db/utils";
@@ -20,7 +21,7 @@ export async function createFacility(newFacility: Facility, newAdmin: AdminUser)
         // lets verify the facility was created
         const facilityObj = firstOrUndefined(facilityEntry);
         if (!facilityObj) {
-            throw new Error("Failed to create facility");
+            throw new BadRequestError("createFacility: Failed to create facility");
         }
 
         const newAdminUser: User = { ...newAdmin, facilityId: facilityObj.id };
@@ -34,7 +35,7 @@ export async function createFacility(newFacility: Facility, newAdmin: AdminUser)
         // verify the user was created
         const userObj = firstOrUndefined(userEntry);
         if (!userObj) {
-            throw new Error("Failed to create user");
+            throw new BadRequestError("createFacility: Failed to create user");
         }
 
         return { facility: facilityObj, user: userObj };
