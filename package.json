@@ -4,8 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "npx tsc",
-    "dev": "npx tsc && node dist/server.js",
+    "dev": "vite-node src/server.ts",
+    "build": "vite build",
+    "start": "node dist/server.js",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate"
   },
@@ -15,10 +16,16 @@
   "description": "",
   "devDependencies": {
     "@types/express": "^5.0.3",
+    "@types/node": "^24.1.0",
     "drizzle-kit": "^0.31.4",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite": "^7.0.5",
+    "vite-node": "^3.2.4",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "bcrypt": "^6.0.0",
     "drizzle-orm": "^0.44.3",
     "express": "^5.1.0",
     "postgres": "^3.4.7"

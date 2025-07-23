@@ -23,7 +23,7 @@ export const users = pgTable("users", {
     firstName: varchar("first_name", { length: 256 }).notNull(),
     lastName: varchar("last_name", { length: 256 }).notNull(),
     email: varchar("email", { length: 256 }).unique().notNull(),
-    passwordHash: text("password_hash").notNull(),
+    password: text("password").notNull(),
     isAdmin: boolean("is_admin").default(false),
     facilityId: uuid("facility_id")
         .notNull()
