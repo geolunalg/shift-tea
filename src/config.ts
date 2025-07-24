@@ -16,6 +16,7 @@ type APIConfig = {
 type JWTConfig = {
     secret: string;
     tokenDuration: number;
+    refreshDuration: number;
 }
 
 type DbConfig = {
@@ -29,7 +30,8 @@ export const config: Config = {
     },
     jwt: {
         secret: envOrThrow("JWT_SECRET"),
-        tokenDuration: 60 * 60
+        tokenDuration: 60 * 60,                     // 1 hours in seconds
+        refreshDuration: 60 * 60 * 24 * 60 * 1000   // 60 days in milliseconds
     },
     db: {
         dbUrl: envOrThrow("DB_URL")

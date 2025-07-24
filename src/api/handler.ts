@@ -7,6 +7,7 @@ import { omitParams } from "@/db/utils.js";
 import { getUserByEmail } from "@/db/users";
 import { UserNotAuthenticatedError } from "@/api/errors";
 import { config } from "@/config";
+import { saveRefreshToken } from "@/db/refreshTokens";
 
 
 export function checkServerReadiness(req: Request, res: Response): void {
@@ -71,7 +72,10 @@ export async function login(req: Request, res: Response) {
     const accessToken = await makeJWT(user.id, config.jwt.tokenDuration, config.jwt.secret);
     const refreshToken = makeRefreshToken();
 
-    // @TODO: save refresh token to table -- need to create new refresh token table
+    const savedRefreshToken = await saveRefreshToken(user.id, refreshToken);
+    if (!savedRefreshToken) {
+        throw new UserNotAuthenticatedError("login: User is not authenticated")
+    }
 
     const userResponse: UserResponse = omitParams(user, ["password", "deleteAt"]);
     const loginResponse: LoginResponse = {
