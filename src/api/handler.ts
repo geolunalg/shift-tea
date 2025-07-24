@@ -52,7 +52,7 @@ type LoginResponse = UserResponse & {
     refresh: string;
 };
 
-export async function login(req: Request, res: Response) {
+export async function userLogin(req: Request, res: Response) {
     type Parameters = {
         email: string,
         password: string
@@ -61,12 +61,12 @@ export async function login(req: Request, res: Response) {
     const params: Parameters = req.body;
     const user = await getUserByEmail(params.email);
     if (!user) {
-        throw new UserNotAuthenticatedError("login: User email not found");
+        throw new UserNotAuthenticatedError("userLogin: User email not found");
     }
 
     const matched = await checkHashedPassword(params.password, user.password);
     if (!matched) {
-        throw new UserNotAuthenticatedError("login: Invalid password");
+        throw new UserNotAuthenticatedError("userLogin: Invalid password");
     }
 
     const accessToken = await makeJWT(user.id, config.jwt.tokenDuration, config.jwt.secret);
@@ -74,7 +74,7 @@ export async function login(req: Request, res: Response) {
 
     const savedRefreshToken = await saveRefreshToken(user.id, refreshToken);
     if (!savedRefreshToken) {
-        throw new UserNotAuthenticatedError("login: User is not authenticated")
+        throw new UserNotAuthenticatedError("userLogin: User is not authenticated")
     }
 
     const userResponse: UserResponse = omitParams(user, ["password", "deleteAt"]);

@@ -1,23 +1,17 @@
 import express from 'express';
 import { config } from '@/config';
 import { LogResponses } from '@/api/middleware';
-import { checkServerReadiness, login, registerFacility } from '@/api/handler';
+import { checkServerReadiness, userLogin, registerFacility } from '@/api/handler';
 import { errorHandler } from '@/api/errors';
+import v1Routes from './api/router/v1.routes';
 
 
 const app = express();
 
-
 app.use("/", express.static("./src/app"));      // display index.html
 app.use(express.json());                        // allows to easily parse requests
+app.use("/api/v1", v1Routes);                   // set v1 api routes
 app.use(LogResponses);                          // log response if not a 2xx
-
-
-app.get("/api/v1/healthz", checkServerReadiness);
-app.post("/api/v1/facilities", registerFacility);
-app.post("/api/v1/login", login);
-
-
 app.use(errorHandler);                          // needs to go last to resolve errors
 
 app.listen(config.api.port, () => {
