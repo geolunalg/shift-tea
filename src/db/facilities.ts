@@ -1,7 +1,7 @@
 import { BadRequestError } from "@/api/errors";
 import { db } from "@/db/connection";
 import { User, Facility, facilities, users } from "@/db/schema";
-import { firstOrUndefined, omitParams } from "@/db/utils";
+import { firstOrUndefined, omitParams } from "@/utils";
 
 
 export type NewFacility = {

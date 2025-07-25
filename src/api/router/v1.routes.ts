@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { LogResponses } from "@/api/middleware";
+import { LogResponses } from "@/api/middleware/logger";
 import { checkServerReadiness } from "@/api/handler/serverReady";
 import { registerFacility } from "@/api/handler/facilities";
 import { userLogin } from "@/api/handler/users";

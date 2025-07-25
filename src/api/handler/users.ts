@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { respondWithJSON } from "@/api/json.js";
 import { checkHashedPassword, makeJWT, makeRefreshToken } from "@/api/handler/auth.js";
 import { User } from "@/db/schema.js";
-import { omitParams } from "@/db/utils.js";
+import { omitParams } from "@/utils.js";
 import { getUserByEmail } from "@/db/users";
 import { UserNotAuthenticatedError } from "@/api/errors";
 import { config } from "@/config";

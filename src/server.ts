@@ -1,6 +1,6 @@
 import express from 'express';
 import { config } from '@/config';
-import { LogResponses } from '@/api/middleware';
+import { LogResponses } from '@/api/middleware/logger';
 import { errorHandler } from '@/api/errors';
 import v1Routes from './api/router/v1.routes';
 

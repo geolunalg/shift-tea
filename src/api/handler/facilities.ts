@@ -3,7 +3,7 @@ import { respondWithJSON } from "@/api/json.js";
 import { hashPassword, } from "@/api/handler/auth.js";
 import { Facility } from "@/db/schema.js";
 import { AdminUser, createFacility } from "@/db/facilities.js";
-import { omitParams } from "@/db/utils.js";
+import { omitParams } from "@/utils.js";
 
 
 export async function registerFacility(req: Request, res: Response) {
