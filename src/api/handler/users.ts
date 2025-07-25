@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { respondWithJSON } from "@/api/json.js";
-import { checkHashedPassword, makeJWT, makeRefreshToken } from "@/api/handler/auth.js";
+import { checkHashedPassword, makeJWT, makeRefreshToken } from "@/api/middleware/auth.js";
 import { User } from "@/db/schema.js";
 import { omitParams } from "@/utils.js";
 import { getUserByEmail } from "@/db/users";
@@ -9,7 +9,7 @@ import { config } from "@/config";
 import { saveRefreshToken } from "@/db/refreshTokens";
 
 
-type UserResponse = Omit<User, "password" | "deleteAt">;
+export type UserResponse = Omit<User, "password" | "deleteAt">;
 type LoginResponse = UserResponse & {
     token: string;
     refresh: string;
@@ -48,4 +48,8 @@ export async function userLogin(req: Request, res: Response) {
     }
 
     respondWithJSON(res, 200, loginResponse);
+}
+
+export async function addUser(req: Request, res: Response) {
+    respondWithJSON(res, 200, { OK: "ok" });
 }
