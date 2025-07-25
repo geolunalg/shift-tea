@@ -3,6 +3,7 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import type { JwtPayload } from "jsonwebtoken";
 
+
 const TOKEN_ISSUER = "simple-scheduler";
 
 export async function hashPassword(password: string) {
