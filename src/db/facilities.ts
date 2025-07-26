@@ -1,7 +1,8 @@
 import { BadRequestError } from "@/api/errors";
 import { db } from "@/db/connection";
 import { User, Facility, facilities, users } from "@/db/schema";
-import { firstOrUndefined, omitParams } from "@/utils";
+import { firstOrUndefined } from "@/utils";
+import { eq } from "drizzle-orm";
 
 
 export type NewFacility = {
@@ -40,4 +41,16 @@ export async function createFacility(newFacility: Facility, newAdmin: AdminUser)
 
         return { facility: facilityObj, user: userObj };
     });
+}
+
+export async function getFacilityByUserId(userId: string) {
+    const result = await db
+        .select({
+            facility: facilities
+        })
+        .from(facilities)
+        .innerJoin(users, eq(users.facilityId, facilities.id))
+        .where(eq(users.id, userId));
+
+    return firstOrUndefined(result);
 }
