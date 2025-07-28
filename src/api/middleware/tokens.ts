@@ -18,6 +18,8 @@ export async function checkHashedPassword(password: string, hash: string) {
     return bcrypt.compare(password, hash);
 }
 
+// @TODO: refresh tokens storage
+
 type Payload = Pick<JwtPayload, "iss" | "sub" | "iat" | "exp">;
 
 export async function makeJWT(userId: string, expiresIn: number, secret: string) {
