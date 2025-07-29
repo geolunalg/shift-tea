@@ -3,8 +3,7 @@ import crypto from "crypto";
 import { Request } from "express";
 import jwt from "jsonwebtoken";
 import type { JwtPayload } from "jsonwebtoken";
-import { UserNotAuthenticatedError } from "../errors";
-import { decode } from "punycode";
+import { UserNotAuthenticatedError } from "@/api/errors";
 
 
 const TOKEN_ISSUER = "simple-scheduler";
@@ -18,7 +17,6 @@ export async function checkHashedPassword(password: string, hash: string) {
     return bcrypt.compare(password, hash);
 }
 
-// @TODO: refresh tokens storage
 
 type Payload = Pick<JwtPayload, "iss" | "sub" | "iat" | "exp">;
 
