@@ -79,11 +79,17 @@ export async function addUser(req: Request, res: Response) {
         return pw.join("");
     }
 
+
     const userBody = req.body as UserResponse;
+
+    if (typeof facility.id !== "string") {
+        throw new BadRequestError("Facility id undefined");
+    }
+
     const newUser: User = {
         ...userBody,
         password: getTempPw(),
-        facilityId: facility.id! // force the `uuid` type it will be present
+        facilityId: facility.id
     }
 
     const user = await createUser(newUser satisfies User);
