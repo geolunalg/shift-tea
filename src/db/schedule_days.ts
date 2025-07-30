@@ -15,6 +15,10 @@ export async function getAllScheduleDays(day: Date) {
 
 
 export async function insertScheduleDays(days: ScheduleDay[]) {
+    if (days.length === 0) {
+        return [];
+    }
+
     const result = await db
         .insert(scheduleDays)
         .values(days)
