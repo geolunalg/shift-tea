@@ -1,3 +1,4 @@
+import cron from "node-cron";
 import { getAllScheduleDays, insertScheduleDays } from "@/db/schedule_days";
 
 
@@ -34,4 +35,18 @@ export async function generateDaysOfFullYear() {
         const insertedDates = await insertScheduleDays(insertDateVals);
         console.log(`schedule dates added: ${insertedDates.length}`);
     }
+}
+
+
+export function cronJobsSetup() {
+    const firstOfMonth = "0 0 0 1 * *";
+    cron.schedule(firstOfMonth, async () => {
+        try {
+            await generateDaysOfFullYear();
+        } catch (err) {
+            console.log(err)
+        }
+    }, {
+        timezone: "America/Los_Angeles"
+    });
 }
