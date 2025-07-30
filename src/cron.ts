@@ -5,12 +5,14 @@ import { getAllScheduleDays, insertScheduleDays } from "@/db/schedule_days";
 export async function generateDaysOfFullYear() {
     const today = new Date();
     const currMonth = today.getMonth();
-    let year = today.getFullYear();
+    const currYear = today.getFullYear();
 
     const dates: Date[] = [];
 
+    let year = currYear;
     for (let i = 0; i <= 12; i++) {
         const month = (currMonth + i) % 12;
+
         if (month === 0 && i > 0) {
             year++;
         }
@@ -23,7 +25,7 @@ export async function generateDaysOfFullYear() {
     }
 
     // getting all the dates the current month forward
-    const storedDates = await getAllScheduleDays(new Date(year, 1, currMonth));
+    const storedDates = await getAllScheduleDays(new Date(currYear, currMonth, 1));
     const existingDatesSet = new Set(storedDates.map((d) => d.dates.toISOString()));
 
     const insertDateVals = dates
