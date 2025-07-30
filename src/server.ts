@@ -3,6 +3,7 @@ import { config } from '@/config';
 import { LogResponses } from '@/api/middleware/logger';
 import { errorHandler } from '@/api/errors';
 import v1Routes from '@/api/router/v1.routes';
+import { generateDaysOfFullYear } from '@/cron';
 
 
 const app = express();
@@ -15,4 +16,5 @@ app.use(errorHandler);                          // needs to go last to resolve e
 
 app.listen(config.api.port, () => {
     console.log(`Server listening at http://localhost:${config.api.port}`);
+    generateDaysOfFullYear();
 });

@@ -68,7 +68,7 @@ export type Shift = typeof shifts.$inferInsert;
 
 export const scheduleDays = pgTable("schedule_days", {
     id: uuid("id").primaryKey().defaultRandom(),
-    scheduleDate: date("schedule_date")
+    dates: date("dates")
         .notNull()
         .unique()
 });

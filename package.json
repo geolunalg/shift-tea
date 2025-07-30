@@ -30,6 +30,7 @@
     "drizzle-orm": "^0.44.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "node-cron": "^4.2.1",
     "postgres": "^3.4.7"
   }
 }
