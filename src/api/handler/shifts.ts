@@ -48,8 +48,11 @@ export async function generateShifts(req: Request, res: Response) {
 
     const params: ShiftsParams = req.body;
 
-    const shiftMembers: ShiftMember[] = [];
+    if (params.month < 0 && params.month > 12) {
+        throw new BadRequestError("Months must be index 0-11: Jan=0 | Dec=11");
+    }
 
+    const shiftMembers: ShiftMember[] = [];
     for (const shift of params.shifts) {
         const shiftVals: Shift = {
             facilityId: facility.id,
