@@ -3,9 +3,9 @@ import { respondWithJSON } from "@/api/json";
 import { getFacilityByUserId } from "@/db/facilities";
 import { BadRequestError } from "@/api/errors";
 import { Assignment, Facility, Shift } from "@/db/schema";
-import { createShift, getShift } from "@/db/shifts";
+import { createShift, getShiftsForMonth, getShift } from "@/db/shifts";
 import { getUserScheduleDays } from "@/db/schedule_days";
-import { assignShiftToUser, UserAssignment } from "@/db/assignments";
+import { assignShiftToUser, getShiftMembers, UserAssignment } from "@/db/assignments";
 
 
 type ShiftsParams = {
@@ -138,4 +138,65 @@ async function prepareMemberShifts(member: ShiftMember) {
     }
 
     return assignments;
+}
+
+
+type MonthSchedulesResponse = {
+    year: number;
+    month: number;
+    shifts: ScheduledStaff[];
+}
+
+type ScheduledStaff = Shift & {
+    staff: StaffMember[];
+}
+
+type StaffMember = {
+    userId: string;
+    firstName: string;
+    lastName: string;
+    day: number[];
+}
+
+export async function getMonthShifts(req: Request, res: Response) {
+    const today = new Date();
+    const currYear = req.query.year ? Number(req.query.year) : today.getFullYear();
+    const currMonth = req.query.month ? Number(req.query.month) : today.getMonth();
+
+    const monthSchedulesResponse: MonthSchedulesResponse = {
+        year: currYear,
+        month: currMonth,
+        shifts: []
+    }
+
+    const shifts = await getShiftsForMonth(currYear, currMonth);
+
+    for (const shift of shifts) {
+        const members = await getShiftMembers(shift.id);
+
+        let shiftStaffMembers: StaffMember[] = [];
+        const staffMember: any = {} as StaffMember;
+        for (const member of members) {
+            if (!(member.userId in staffMember)) {
+                staffMember[member.userId] = {
+                    userId: member.userId,
+                    firstName: member.firstName,
+                    lastName: member.lastName,
+                    day: []
+                } as StaffMember;
+            }
+
+            const day = new Date(member.scheduleDays);
+            staffMember[member.userId].day.push(day.getDate())
+        }
+
+        for (const member of Object.values(staffMember)) {
+            shiftStaffMembers.push(member as StaffMember);
+        }
+
+        const scheduledStaff: ScheduledStaff = { ...shift, staff: shiftStaffMembers };
+        monthSchedulesResponse.shifts.push(scheduledStaff);
+    }
+
+    respondWithJSON(res, 200, monthSchedulesResponse)
 }

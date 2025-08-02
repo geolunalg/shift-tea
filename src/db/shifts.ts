@@ -31,3 +31,17 @@ export async function createShift(shift: Shift) {
 
     return firstOrUndefined(result);
 }
+
+export async function getShiftsForMonth(year: number, month: number) {
+    const result = await db
+        .select()
+        .from(shifts)
+        .where(
+            and(
+                eq(shifts.year, year),
+                eq(shifts.month, month)
+            )
+        );
+
+    return result;
+}

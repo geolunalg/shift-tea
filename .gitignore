@@ -6,6 +6,8 @@
 
 migrations/
 
+queries.sql
+
 ### Node ###
 # Logs
 logs

@@ -5,7 +5,7 @@ import { registerFacility } from "@/api/handler/facilities";
 import { addUser, userLogin } from "@/api/handler/users";
 import { authenticate } from "@/api/middleware/auth";
 import { refreshToken, revokeToken } from "@/api/handler/tokens";
-import { generateShifts } from "../handler/shifts";
+import { generateShifts, getMonthShifts } from "../handler/shifts";
 
 
 const v1Routes = Router();
@@ -22,6 +22,8 @@ v1Routes.post("/users", authenticate, addUser);
 v1Routes.post("/refresh", refreshToken);
 v1Routes.post("/revoke", revokeToken);
 v1Routes.post("/shifts", authenticate, generateShifts);
+
+v1Routes.get("/shifts", authenticate, getMonthShifts);
 
 
 export default v1Routes;
