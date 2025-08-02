@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { getBearerToken, makeJWT } from "../middleware/tokens";
-import { respondWithJSON } from "../json";
+import { getBearerToken, makeJWT } from "@/api/middleware/tokens";
+import { respondWithJSON } from "@/api/json";
 import { refreshUserToken, revokeRefreshToken } from "@/db/refreshTokens";
-import { UserNotAuthenticatedError } from "../errors";
+import { UserNotAuthenticatedError } from "@/api/errors";
 import { config } from "@/config";
 
 export async function refreshToken(req: Request, res: Response) {

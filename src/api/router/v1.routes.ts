@@ -5,7 +5,7 @@ import { registerFacility } from "@/api/handler/facilities";
 import { addUser, userLogin } from "@/api/handler/users";
 import { authenticate } from "@/api/middleware/auth";
 import { refreshToken, revokeToken } from "@/api/handler/tokens";
-import { generateShifts, getMonthShifts } from "../handler/shifts";
+import { generateShifts, getMonthShifts } from "@/api/handler/shifts";
 
 
 const v1Routes = Router();
