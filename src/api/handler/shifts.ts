@@ -34,20 +34,10 @@ type ShiftMember = {
 }
 
 export async function generateShifts(req: Request, res: Response) {
-    const userId = req.user?.id as string;
-
-    const obj = await getFacilityByUserId(userId);
-    if (!obj) {
-        throw new BadRequestError("Facility not found");
-    }
-
-    const facility: Facility = obj.facility;
-    if (typeof facility.id !== "string") {
-        throw new BadRequestError("Facility not found");
-    }
+    const facility = await getLoggedInUserFacility(req);
+    const facilityId = facility.id!; // this guranteed to be defined by this point
 
     const params: ShiftsParams = req.body;
-
     if (params.month < 0 && params.month > 12) {
         throw new BadRequestError("Months must be index 0-11: Jan=0 | Dec=11");
     }
@@ -55,7 +45,7 @@ export async function generateShifts(req: Request, res: Response) {
     const shiftMembers: ShiftMember[] = [];
     for (const shift of params.shifts) {
         const shiftVals: Shift = {
-            facilityId: facility.id,
+            facilityId: facilityId,
             year: params.year,
             month: params.month,
             startTime: shift.startTime,
@@ -109,7 +99,6 @@ export async function generateShifts(req: Request, res: Response) {
     respondWithJSON(res, 200, response);
 }
 
-
 async function getUserShift(shift: Shift) {
     let obj = await getShift(shift);
     if (!obj) {
@@ -140,7 +129,6 @@ async function prepareMemberShifts(member: ShiftMember) {
     return assignments;
 }
 
-
 type MonthSchedulesResponse = {
     year: number;
     month: number;
@@ -163,14 +151,16 @@ export async function getMonthShifts(req: Request, res: Response) {
     const currYear = req.query.year ? Number(req.query.year) : today.getFullYear();
     const currMonth = req.query.month ? Number(req.query.month) : today.getMonth();
 
+    const facility = await getLoggedInUserFacility(req);
+    const facilityId = facility.id!; // this guranteed to be defined by this point
+
     const monthSchedulesResponse: MonthSchedulesResponse = {
         year: currYear,
         month: currMonth,
         shifts: []
     }
 
-    const shifts = await getShiftsForMonth(currYear, currMonth);
-
+    const shifts = await getShiftsForMonth(currYear, currMonth, facilityId);
     for (const shift of shifts) {
         const members = await getShiftMembers(shift.id);
 
@@ -199,4 +189,20 @@ export async function getMonthShifts(req: Request, res: Response) {
     }
 
     respondWithJSON(res, 200, monthSchedulesResponse)
+}
+
+async function getLoggedInUserFacility(req: Request) {
+    const userId = req.user?.id as string;
+
+    const obj = await getFacilityByUserId(userId);
+    if (!obj) {
+        throw new BadRequestError("Facility not found");
+    }
+
+    const facility: Facility = obj.facility;
+    if (typeof facility.id !== "string") {
+        throw new BadRequestError("Facility not found");
+    }
+
+    return facility;
 }

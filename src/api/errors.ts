@@ -46,6 +46,7 @@ export async function errorHandler(err: Error, req: Request, res: Response, next
             message = err.message;
             break;
         default:
+            message = `${message}: ${err.message}`;
             break
     };
 
