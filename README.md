@@ -20,3 +20,17 @@ This project was inspired by a real problem I witnessed: a Director of Nurses st
 3. Run database migrations: `npm run migrate`
 4. Start the server: `npm start`
 5. Visit `http://localhost:3000`
+
+## Usage
+
+**For Managers:**
+- Create monthly schedules by assigning staff to shifts
+- Set shift start and end times
+- View schedule overview and coverage
+
+**For Staff:**
+- View assigned shifts for the current month
+- Check shift times and dates
+<!-- - [Future: Request time off] -->
+
+<!-- ## Contributing -->
