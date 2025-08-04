@@ -7,9 +7,8 @@ import { authenticate } from "@/api/middleware/auth";
 import { refreshToken, revokeToken } from "@/api/handler/tokens";
 import { generateShifts, getMonthShifts } from "@/api/handler/shifts";
 
-
 const v1Routes = Router();
-v1Routes.use(LogResponses)
+v1Routes.use(LogResponses);
 
 // root api response
 v1Routes.get("/", apiVersion1);
@@ -27,6 +26,5 @@ v1Routes.post("/revoke", revokeToken);
 v1Routes.post("/shifts", authenticate, generateShifts);
 
 v1Routes.get("/shifts", authenticate, getMonthShifts);
-
 
 export default v1Routes;
