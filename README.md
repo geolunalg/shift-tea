@@ -34,4 +34,5 @@ This project was inspired by a real problem I witnessed: a Director of Nurses st
 - Check shift times and dates
 <!-- - [Future: Request time off] -->
 
-<!-- ## Contributing -->
+## Contributing
+Contributions welcome! Please open an issue first to discuss any major changes and create a pull request for review.
