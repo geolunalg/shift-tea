@@ -17,9 +17,10 @@ This project was inspired by a real problem I witnessed: a Director of Nurses st
 ### Running the Application
 1. Clone this repository
 2. Install dependencies: `npm install`
-3. Run database migrations: `npm run migrate`
-4. Start the server: `npm start`
-5. Visit `http://localhost:3000`
+3. Run database generation: `npm run generate`
+4. Run database migrations: `npm run migrate`
+5. Start the server: `npm start`
+6. Visit `http://localhost:3000`
 
 ## Usage
 
