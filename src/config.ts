@@ -23,18 +23,23 @@ type DbConfig = {
     dbUrl: string;
 }
 
+const port = Number(envOrThrow("PORT"));
+const platform = envOrThrow("PLATFORM");
+const secret = envOrThrow("JWT_SECRET");
+const dbUrl = envOrThrow("DB_URL");
+
 export const config: Config = {
     api: {
-        port: Number(envOrThrow("PORT")),
-        platform: envOrThrow("PLATFORM")
+        port: port,
+        platform: platform
     },
     jwt: {
-        secret: envOrThrow("JWT_SECRET"),
+        secret: secret,
         tokenDuration: 60 * 60,                     // 1 hours in seconds
         refreshDuration: 60 * 60 * 24 * 60 * 1000   // 60 days in milliseconds
     },
     db: {
-        dbUrl: envOrThrow("DB_URL")
+        dbUrl: dbUrl
     }
 }
 

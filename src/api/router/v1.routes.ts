@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { LogResponses } from "@/api/middleware/logger";
-import { checkServerReadiness } from "@/api/handler/serverReady";
+import { apiVersion1, checkServerReadiness } from "@/api/handler/serverReady";
 import { registerFacility } from "@/api/handler/facilities";
 import { addUser, userLogin } from "@/api/handler/users";
 import { authenticate } from "@/api/middleware/auth";
@@ -10,6 +10,9 @@ import { generateShifts, getMonthShifts } from "@/api/handler/shifts";
 
 const v1Routes = Router();
 v1Routes.use(LogResponses)
+
+// root api response
+v1Routes.get("/", apiVersion1);
 
 // public
 v1Routes.get("/healthz", checkServerReadiness);

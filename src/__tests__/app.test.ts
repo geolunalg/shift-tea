@@ -16,6 +16,6 @@ describe('Express App', () => {
 
     it('should respond to API routes', async () => {
         const res = await request(app).get('/api/v1');
-        expect([404]).toContain(res.status);
+        expect([200]).toContain(res.status);
     });
 });
