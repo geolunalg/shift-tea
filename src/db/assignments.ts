@@ -20,6 +20,10 @@ export async function assignShiftToUser(schedule: UserAssignment) {
       )
       .returning();
 
+    if (schedule.assignment.length === 0) {
+      return [];
+    }
+
     const shift = await tx
       .insert(assignments)
       .values(schedule.assignment)
