@@ -50,7 +50,7 @@ export const config: Config = {
 };
 
 export function envOrThrow(key: string) {
-  const value = process.env[key];
+  const value = process.env[String(key)]!;
   if (value) {
     return value;
   }

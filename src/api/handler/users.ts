@@ -83,7 +83,7 @@ export async function addUser(req: Request, res: Response) {
     const pw: string[] = [];
     for (let i = 0; i < 8; i++) {
       const randIdx = Math.floor(Math.random() * chars.length);
-      pw.push(chars[randIdx]);
+      pw.push(chars[Number(randIdx)]);
     }
     return pw.join("");
   }

@@ -90,7 +90,7 @@ export async function generateShifts(req: Request, res: Response) {
 
   const response = { success: 0, failed: 0, failedUserId: [] as string[] };
   results.forEach((res, idx) => {
-    const input: UserAssignment = schedules[idx].assignment;
+    const input: UserAssignment = schedules[Number(idx)].assignment;
     if (res.status === "fulfilled") {
       response.success++;
     } else {
