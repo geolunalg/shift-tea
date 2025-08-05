@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { getAllScheduleDays, insertScheduleDays } from "@/db/schedule_days";
+import { getAllScheduleDays, insertScheduleDays } from "@/db/scheduleDays";
 import { config } from "@/config";
 
 export async function generateDaysOfFullYear() {

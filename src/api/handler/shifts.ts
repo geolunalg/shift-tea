@@ -4,7 +4,7 @@ import { getFacilityByUserId } from "@/db/facilities";
 import { BadRequestError } from "@/api/errors";
 import { Assignment, Facility, Shift } from "@/db/schema";
 import { createShift, getShiftsForMonth, getShift } from "@/db/shifts";
-import { getUserScheduleDays } from "@/db/schedule_days";
+import { getUserScheduleDays } from "@/db/scheduleDays";
 import {
   assignShiftToUser,
   getShiftMembers,
