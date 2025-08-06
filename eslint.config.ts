@@ -13,5 +13,13 @@ export default defineConfig([
     languageOptions: { globals: globals.node }
   },
   tseslint.configs.recommended,
-  pluginSecurity.configs.recommended
+  pluginSecurity.configs.recommended,
+
+  // Specific configuration for test files
+  {
+    files: ['**/*.test.ts'], // Target test files
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off', // Disable for test files
+    }
+  }
 ]);
