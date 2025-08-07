@@ -50,7 +50,7 @@ describe("generateDaysOfFullYear", () => {
 
   it("should do nothing if all dates exist", async () => {
     // We're generating 365 day plus 31 days of August of next year.
-    const futureDates = Array.from({ length: (365 + 31) }, (_, i) => {
+    const futureDates = Array.from({ length: 365 + 31 }, (_, i) => {
       const date = new Date(2025, 7, 1); // August is 7 (0-based)
       date.setDate(date.getDate() + i);
       return { dates: date };
