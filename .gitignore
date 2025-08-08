@@ -7,6 +7,7 @@
 migrations/
 
 queries.sql
+.secrets
 
 ### Node ###
 # Logs

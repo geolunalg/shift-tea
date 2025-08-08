@@ -1,0 +1,63 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+
+    env:
+      PORT: 8080
+      JWT_SECRET: "fake_jwt_secret"
+      DB_URL: "dummydb://localhost:27017/test_db"
+      PLATFORM: "test"
+
+    steps:
+      - name: check code out
+        uses: actions/checkout@v4
+
+      - name: set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      
+      - name: install dependencies
+        run: npm ci
+
+      - name: create .env file
+        run: |
+          echo "PORT=${PORT}" >> .env
+          echo "JWT_SECRET=${JWT_SECRET}" >> .env
+          echo "DB_URL=${DB_URL}" >> .env
+          echo "PLATFORM=${PLATFORM}" >> .env
+
+      - name: run test
+        run: npm run test -- --coverage
+
+  style:
+    name: style
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: check code out
+        uses: actions/checkout@v4
+
+      - name: set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: check code format
+        run: npm run format:check
+
+      - name: check linting
+        run: npm run lint -- --max-warnings=0
+        

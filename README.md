@@ -1,3 +1,5 @@
+![test badge](https://github.com/geolunalg/simple-scheduler/actions/workflows/ci.yml/badge.svg)
+
 # Shifty
 
 ## Description

@@ -24,6 +24,7 @@ vi.mock("@/db/facilities", () => ({
 vi.mock("@/utils", () => ({
   omitParams: vi.fn((obj, keys) => {
     const copy = { ...obj };
+    // eslint-disable-next-line security/detect-object-injection
     keys.forEach((k) => delete copy[k]);
     return copy;
   }),
