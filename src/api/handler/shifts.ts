@@ -41,7 +41,7 @@ export async function generateShifts(req: Request, res: Response) {
   const facilityId = facility.id!; // this guranteed to be defined by this point
 
   const params: ShiftsParams = req.body;
-  if (params.month < 0 && params.month > 12) {
+  if (params.month < 0 || params.month > 12) {
     throw new BadRequestError("Months must be index 0-11: Jan=0 | Dec=11");
   }
 
@@ -86,7 +86,7 @@ export async function generateShifts(req: Request, res: Response) {
     assignment: assignment,
     promise: assignShiftToUser(assignment),
   }));
-  const results = await Promise.allSettled(schedules);
+  const results = await Promise.allSettled(schedules.map(s => s.promise));
 
   const response = { success: 0, failed: 0, failedUserId: [] as string[] };
   results.forEach((res, idx) => {

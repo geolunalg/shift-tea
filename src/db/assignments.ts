@@ -1,5 +1,7 @@
+import { BadRequestError } from "@/api/errors";
 import { db } from "@/db/connection";
 import { Assignment, assignments, scheduleDays, users } from "@/db/schema";
+import { firstOrUndefined } from "@/utils";
 import { and, eq } from "drizzle-orm";
 
 export type UserAssignment = {
@@ -10,6 +12,15 @@ export type UserAssignment = {
 
 export async function assignShiftToUser(schedule: UserAssignment) {
   return await db.transaction(async (tx) => {
+    const user = await tx
+      .select()
+      .from(users)
+      .where(eq(users.id, schedule.userId));
+
+    if (!firstOrUndefined(user)) {
+      throw new BadRequestError("Staff member not found");
+    }
+
     await tx
       .delete(assignments)
       .where(
