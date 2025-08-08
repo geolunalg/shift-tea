@@ -56,6 +56,12 @@ describe("API Health Endpoints", () => {
         message: "Welcome to the API",
         version: "1.0.0",
         status: "OK",
+        api: {
+          version1: {
+            specs: "http://localhost:8080/api/v1/docs",
+            rawSpects: "http://localhost:8080/api/v1/docs.json",
+          },
+        },
       });
     });
 

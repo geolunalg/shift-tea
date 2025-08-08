@@ -111,14 +111,18 @@ async function getUserShift(shift: Shift) {
 }
 
 async function prepareMemberShifts(member: ShiftMember) {
-  const dates: Date[] = [];
+  const dates = new Set<Date>();
 
+  const daysInMonth = new Date(member.year, member.month, 0).getDate();
   for (const day of member.days) {
-    const date = new Date(member.year, member.month, day);
-    dates.push(date);
+    if (day >= 1 && day <= daysInMonth) {
+      const date = new Date(member.year, member.month, day);
+      dates.add(date);
+    }
   }
 
-  const days = await getUserScheduleDays(dates);
+  // pass the dates set as an array
+  const days = await getUserScheduleDays([...dates]);
 
   const assignments: Assignment[] = [];
   for (const day of days) {

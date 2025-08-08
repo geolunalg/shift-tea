@@ -1,0 +1,218 @@
+openapi: 3.0.3
+info:
+  title: simple-scheduler API
+  version: 1.0.0
+  description: API documentation converted from Postman collection.
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Local development server
+
+paths:
+  /:
+    get:
+      summary: Base API endpoint
+      responses:
+        '200':
+          description: API root
+
+  /docs.json:
+    get:
+      summary: Get OpenAPI JSON documentation
+      description: Returns the OpenAPI specification in JSON format from the server.
+      responses:
+        '200':
+          description: OpenAPI JSON successfully returned
+          content:
+            application/json:
+              schema:
+                type: object
+                description: The OpenAPI specification JSON
+
+  /healthz:
+    get:
+      summary: Check if server is ready
+      responses:
+        '200':
+          description: Server is healthy
+
+  /facilities:
+    post:
+      summary: Add a facility
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                facility:
+                  type: object
+                  properties:
+                    facilityName:
+                      type: string
+                      example: acmy
+                user:
+                  type: object
+                  properties:
+                    firstName:
+                      type: string
+                      example: Nick
+                    lastName:
+                      type: string
+                      example: Furry
+                    email:
+                      type: string
+                      format: email
+                      example: nick@email.com
+                    password:
+                      type: string
+                      example: myPassword
+                    isAdmin:
+                      type: boolean
+                      example: true
+      responses:
+        '201':
+          description: Facility created successfully
+
+  /login:
+    post:
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: nick@email.com
+                password:
+                  type: string
+                  example: myPassword
+      responses:
+        '200':
+          description: Returns access and refresh tokens
+
+  /users:
+    post:
+      summary: Add user
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: berry
+                lastName:
+                  type: string
+                  example: allan
+                email:
+                  type: string
+                  format: email
+                  example: berry@dcu.com
+                isAdmin:
+                  type: boolean
+                  example: false
+      responses:
+        '201':
+          description: User created successfully
+
+  /refresh:
+    post:
+      summary: Refresh access token
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns new access token
+
+  /revoke:
+    post:
+      summary: Revoke refresh token
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Token revoked successfully
+
+  /shifts:
+    post:
+      summary: Create shifts
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                year:
+                  type: integer
+                  example: 2025
+                month:
+                  type: integer
+                  example: 7
+                shifts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      startTime:
+                        type: string
+                        example: "08:00"
+                      endTime:
+                        type: string
+                        example: "12:00"
+                      staff:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            userId:
+                              type: string
+                              format: uuid
+                              example: d558903d-24f2-4b26-baf4-1ee8a7b897b0
+                            days:
+                              type: array
+                              items:
+                                type: integer
+                                example: 1
+      responses:
+        '201':
+          description: Shifts created successfully
+
+    get:
+      summary: Get current month shifts
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+          example: 2025
+        - name: month
+          in: query
+          required: true
+          schema:
+            type: integer
+          example: 7
+      responses:
+        '200':
+          description: Returns shifts for the given month
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -6,6 +6,7 @@ import { addUser, userLogin } from "@/api/handler/users";
 import { authenticate } from "@/api/middleware/auth";
 import { refreshToken, revokeToken } from "@/api/handler/tokens";
 import { generateShifts, getMonthShifts } from "@/api/handler/shifts";
+import { apiDocumentation } from "@/api/handler/docs";
 
 const v1Routes = Router();
 v1Routes.use(LogResponses);
@@ -14,6 +15,7 @@ v1Routes.use(LogResponses);
 v1Routes.get("/", apiVersion1);
 
 // public
+v1Routes.get("/docs.json", apiDocumentation);
 v1Routes.get("/healthz", checkServerReadiness);
 v1Routes.post("/facilities", registerFacility);
 v1Routes.post("/login", userLogin);
