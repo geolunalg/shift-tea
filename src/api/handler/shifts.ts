@@ -86,7 +86,7 @@ export async function generateShifts(req: Request, res: Response) {
     assignment: assignment,
     promise: assignShiftToUser(assignment),
   }));
-  const results = await Promise.allSettled(schedules.map(s => s.promise));
+  const results = await Promise.allSettled(schedules.map((s) => s.promise));
 
   const response = { success: 0, failed: 0, failedUserId: [] as string[] };
   results.forEach((res, idx) => {
