@@ -1,4 +1,8 @@
-process.loadEnvFile();
+import fs from 'fs';
+
+if (fs.existsSync('.env')) {
+  process.loadEnvFile();
+}
 
 type Config = {
   api: APIConfig;

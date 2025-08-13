@@ -21,7 +21,9 @@
     "types"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.test.ts",
+    "**/__tests__/**"
   ],
   "ts-node": {
     "esm": true,
