@@ -1,6 +1,6 @@
-import fs from 'fs';
+import fs from "fs";
 
-if (fs.existsSync('.env')) {
+if (fs.existsSync(".env")) {
   process.loadEnvFile();
 }
 
