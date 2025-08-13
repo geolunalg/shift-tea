@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgresSQL
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: scheduler
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+
+  shift_tee:
+    image: server
+    container_name: myserver
+    environment:
+      PORT: 8080
+      PLATFORM: dev
+      JWT_SECRET: mysecret
+      DB_URL: postgres://postgres:postgres@postgres:5432/scheduler
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:

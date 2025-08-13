@@ -1,6 +1,6 @@
-import fs from "fs";
+import { existsSync } from "fs";
 
-if (fs.existsSync(".env")) {
+if (existsSync(".env")) {
   process.loadEnvFile();
 }
 
@@ -23,7 +23,7 @@ type JWTConfig = {
 };
 
 type DbConfig = {
-  dbUrl: string;
+  url: string;
 };
 
 type CronConfig = {
@@ -46,7 +46,7 @@ export const config: Config = {
     refreshDuration: 60 * 60 * 24 * 60 * 1000, // 60 days in milliseconds
   },
   db: {
-    dbUrl: dbUrl,
+    url: dbUrl,
   },
   cron: {
     firstDayOfMonth: "0 0 0 1 * *", // run @ midnight on the first of the month

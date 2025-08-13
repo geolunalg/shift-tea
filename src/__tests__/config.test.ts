@@ -26,7 +26,7 @@ describe("config", () => {
     expect(config.jwt.secret).toBe("supersecret");
     expect(config.jwt.tokenDuration).toBe(60 * 60);
     expect(config.jwt.refreshDuration).toBe(60 * 60 * 24 * 60 * 1000);
-    expect(config.db.dbUrl).toBe("mongodb://localhost:27017/db");
+    expect(config.db.url).toBe("mongodb://localhost:27017/db");
     expect(config.cron.firstDayOfMonth).toBe("0 0 0 1 * *");
   });
 

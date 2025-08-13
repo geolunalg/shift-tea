@@ -22,7 +22,7 @@ sudo apt install postgresql postgresql-contrib -y
 
 Set Postgres password:
 ```
-sudo passwd Postgres
+sudo passwd postgres
 ```
 > Follow the prompts to set the password. To keep things simple, I advise you to use `postgres` as the password.
 
