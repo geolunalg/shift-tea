@@ -4,8 +4,6 @@
 .devcontainer/
 .vscode/
 
-migrations/
-
 queries.sql
 .secrets
 
