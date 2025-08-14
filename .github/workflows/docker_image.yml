@@ -24,16 +24,11 @@ jobs:
         id: vars
         run: echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
 
-      - name: Debug tags
-        run: |
-          echo "Username: ${{ secrets.DOCKERHUB_USERNAME }}"
-          echo "Repo: ${{ env.DOCKER_REPO }}"
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ${{ env.DOCKER_BUILD_CONTEXT }}
-          push: ${{ env.DOCKER_PUSH == 'true' }} 
+          context: ${{ vars.DOCKER_BUILD_CONTEXT }}
+          push: ${{ vars.DOCKER_PUSH == 'true' }} 
           tags: |
-            ${{ env.DOCKER_REPO }}:latest
-            ${{ env.DOCKER_REPO }}:${{ env.SHORT_SHA }}
+            ${{ vars.DOCKER_REPO }}:latest
+            ${{ vars.DOCKER_REPO }}:${{ env.SHORT_SHA }}
