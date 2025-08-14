@@ -40,12 +40,8 @@
           "name": "assignments_user_id_users_id_fk",
           "tableFrom": "assignments",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -53,12 +49,8 @@
           "name": "assignments_shift_id_shifts_id_fk",
           "tableFrom": "assignments",
           "tableTo": "shifts",
-          "columnsFrom": [
-            "shift_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["shift_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -66,12 +58,8 @@
           "name": "assignments_schedule_day_id_schedule_days_id_fk",
           "tableFrom": "assignments",
           "tableTo": "schedule_days",
-          "columnsFrom": [
-            "schedule_day_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["schedule_day_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -127,9 +115,7 @@
         "facilities_facility_name_unique": {
           "name": "facilities_facility_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "facility_name"
-          ]
+          "columns": ["facility_name"]
         }
       },
       "policies": {},
@@ -185,12 +171,8 @@
           "name": "refresh_tokens_user_id_users_id_fk",
           "tableFrom": "refresh_tokens",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -226,9 +208,7 @@
         "schedule_days_dates_unique": {
           "name": "schedule_days_dates_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "dates"
-          ]
+          "columns": ["dates"]
         }
       },
       "policies": {},
@@ -283,12 +263,8 @@
           "name": "shifts_facility_id_facilities_id_fk",
           "tableFrom": "shifts",
           "tableTo": "facilities",
-          "columnsFrom": [
-            "facility_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["facility_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -374,12 +350,8 @@
           "name": "users_facility_id_facilities_id_fk",
           "tableFrom": "users",
           "tableTo": "facilities",
-          "columnsFrom": [
-            "facility_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["facility_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -389,9 +361,7 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
