@@ -9,7 +9,17 @@ Shift-Tee-Server is a web-based staff scheduling application that allows manager
 This project was inspired by a real problem I witnessed: a Director of Nurses struggling with fragile Excel formulas that would corrupt their entire staff scheduling spreadsheet. This highlighted a widespread issue many managers face - spreadsheet-based scheduling is error-prone, and when formulas break, managers waste hours recreating schedules while staff remain uncertain about their shifts. Shift-Tee-Server eliminates this problem by providing a reliable, web-based alternative that abstracts complex scheduling logic into a user-friendly application.
 
 
-## Quick Start
+## Quick Start with Docker
+For the fastest way to get started, run the [docker-compose](https://docs.docker.com/compose/) file located in the project's root directory with the following command:
+```
+docker compose up
+```
+This command will launch both the server and the PostgreSQL database in Docker containers.
+
+Once the containers are running, you can view the API documentation at http://localhost:8080/api/v1/docs.
+
+## Manual Setup
+For a more involved setup, follow the steps below.
 ### Prerequisites & Setup
 1. [Install NVM](docs/install-nvm.md)
 2. [Install Node.js](docs/install-node-version.md) 
