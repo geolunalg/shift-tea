@@ -48,7 +48,7 @@ export async function getShiftMembers(shiftId: string) {
   const results = await db
     .select({
       userId: users.id,
-      Name: sql`CONCAT(${users.firstName}, ' ', ${users.lastName})`.as("Name"),
+      name: sql`CONCAT(${users.firstName}, ' ', ${users.lastName})`.as("name"),
       shiftId: assignments.shiftId,
       scheduleDayId: assignments.scheduleDayId,
       scheduleDays: scheduleDays.dates,

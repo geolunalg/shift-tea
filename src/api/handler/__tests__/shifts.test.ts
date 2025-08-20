@@ -175,7 +175,7 @@ describe("getMonthShifts", () => {
             staff: [
               expect.objectContaining({
                 userId: "u1",
-                day: expect.arrayContaining([1, 2]),
+                days: expect.arrayContaining([1, 2]),
               }),
             ],
           }),
