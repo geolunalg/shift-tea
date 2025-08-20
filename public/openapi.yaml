@@ -196,13 +196,13 @@ paths:
       parameters:
         - name: year
           in: query
-          required: true
+          required: false
           schema:
             type: integer
           example: 2025
         - name: month
           in: query
-          required: true
+          required: false
           schema:
             type: integer
           example: 7

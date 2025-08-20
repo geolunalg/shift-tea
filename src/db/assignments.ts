@@ -2,7 +2,7 @@ import { BadRequestError } from "@/api/errors";
 import { db } from "@/db/connection";
 import { Assignment, assignments, scheduleDays, users } from "@/db/schema";
 import { firstOrUndefined } from "@/utils";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 
 export type UserAssignment = {
   userId: string;
@@ -48,8 +48,7 @@ export async function getShiftMembers(shiftId: string) {
   const results = await db
     .select({
       userId: users.id,
-      firstName: users.firstName,
-      lastName: users.lastName,
+      Name: sql`CONCAT(${users.firstName}, ' ', ${users.lastName})`.as("Name"),
       shiftId: assignments.shiftId,
       scheduleDayId: assignments.scheduleDayId,
       scheduleDays: scheduleDays.dates,

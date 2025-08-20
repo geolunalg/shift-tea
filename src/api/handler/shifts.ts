@@ -148,8 +148,7 @@ type ScheduledStaff = Shift & {
 
 type StaffMember = {
   userId: string;
-  firstName: string;
-  lastName: string;
+  Name: string;
   day: number[];
 };
 
@@ -185,8 +184,7 @@ export async function getMonthShifts(req: Request, res: Response) {
       if (!(member.userId in staffMember)) {
         staffMember[member.userId] = {
           userId: member.userId,
-          firstName: member.firstName,
-          lastName: member.lastName,
+          Name: member.Name,
           day: [],
         } as StaffMember;
       }
