@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { userLogin, addUser } from "@/api/handler/users";
 import { BadRequestError, UserNotAuthenticatedError } from "@/api/errors";
+import { getAllUsers } from "@/api/handler/users";
 
 // Mock dependencies
 vi.mock("@/api/json", () => ({
@@ -14,6 +15,7 @@ vi.mock("@/api/middleware/tokens", () => ({
 vi.mock("@/db/users", () => ({
   createUser: vi.fn(),
   getUserByEmail: vi.fn(),
+  getUsers: vi.fn(),
 }));
 vi.mock("@/db/refreshTokens", () => ({
   saveRefreshToken: vi.fn(),
@@ -37,6 +39,8 @@ vi.mock("@/config", () => ({
     },
   },
 }));
+
+import { getUsers as mockedGetUsers } from "@/db/users"; // use mocked version
 
 import { respondWithJSON } from "@/api/json";
 import {
@@ -182,6 +186,62 @@ describe("addUser", () => {
     (createUser as vi.Mock).mockResolvedValue(null);
 
     await expect(addUser(mockReq, mockRes)).rejects.toBeInstanceOf(
+      BadRequestError,
+    );
+  });
+});
+
+describe("getAllUsers", () => {
+  const mockReq: any = { user: { id: "user123" } };
+  const mockRes: any = {};
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should return users when facility and users exist", async () => {
+    (getFacilityByUserId as vi.Mock).mockResolvedValue({
+      facility: { id: "facility123" },
+    });
+    (mockedGetUsers as vi.Mock).mockResolvedValue([{ id: "u1" }, { id: "u2" }]);
+
+    await getAllUsers(mockReq, mockRes);
+
+    expect(getFacilityByUserId).toHaveBeenCalledWith("user123");
+    expect(mockedGetUsers).toHaveBeenCalledWith("facility123");
+    expect(respondWithJSON).toHaveBeenCalledWith(
+      mockRes,
+      200,
+      expect.arrayContaining([{ id: "u1" }, { id: "u2" }]),
+    );
+  });
+
+  it("should throw BadRequestError if facility is not found", async () => {
+    (getFacilityByUserId as vi.Mock).mockResolvedValue(null);
+
+    await expect(getAllUsers(mockReq, mockRes)).rejects.toBeInstanceOf(
+      BadRequestError,
+    );
+    expect(respondWithJSON).not.toHaveBeenCalled();
+  });
+
+  it("should throw BadRequestError if facility id is not a string", async () => {
+    (getFacilityByUserId as vi.Mock).mockResolvedValue({
+      facility: { id: 123 },
+    });
+
+    await expect(getAllUsers(mockReq, mockRes)).rejects.toBeInstanceOf(
+      BadRequestError,
+    );
+  });
+
+  it("should throw BadRequestError if no users are found", async () => {
+    (getFacilityByUserId as vi.Mock).mockResolvedValue({
+      facility: { id: "facility123" },
+    });
+    (mockedGetUsers as vi.Mock).mockResolvedValue(null);
+
+    await expect(getAllUsers(mockReq, mockRes)).rejects.toBeInstanceOf(
       BadRequestError,
     );
   });

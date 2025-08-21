@@ -7,7 +7,7 @@ import {
 } from "@/api/middleware/tokens.js";
 import { Facility, User } from "@/db/schema.js";
 import { omitParams } from "@/utils.js";
-import { createUser, getUserByEmail } from "@/db/users";
+import { createUser, getUserByEmail, getUsers } from "@/db/users";
 import { BadRequestError, UserNotAuthenticatedError } from "@/api/errors";
 import { config } from "@/config";
 import { saveRefreshToken } from "@/db/refreshTokens";
@@ -108,4 +108,41 @@ export async function addUser(req: Request, res: Response) {
   const userResponse: UserResponse = omitParams(user, ["password", "deleteAt"]);
 
   respondWithJSON(res, 200, userResponse);
+}
+
+// userId: users.id,
+// firstName: users.firstName,
+// lastName: users.lastName,
+// name: sql`CONCAT(${users.firstName}, ' ', ${users.lastName})`.as("name"),
+// email: users.email,
+// isAdmin: users.isAdmin
+
+type UsersList = {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  name: string; // concat name of first and list name
+  email: string;
+  isAdmin: boolean;
+};
+
+export async function getAllUsers(req: Request, res: Response) {
+  const userId = req.user?.id as string;
+
+  const obj = await getFacilityByUserId(userId);
+  if (!obj) {
+    throw new BadRequestError("Facility not found");
+  }
+  const facility: Facility = obj.facility;
+
+  if (typeof facility.id !== "string") {
+    throw new BadRequestError("Facility id undefined");
+  }
+
+  const users: UsersList[] = (await getUsers(facility.id)) as UsersList[];
+  if (!users) {
+    throw new BadRequestError("No users found");
+  }
+
+  respondWithJSON(res, 200, users);
 }

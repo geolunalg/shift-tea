@@ -2,7 +2,7 @@ import { Router } from "express";
 import { LogResponses } from "@/api/middleware/logger";
 import { apiVersion1, checkServerReadiness } from "@/api/handler/serverReady";
 import { registerFacility } from "@/api/handler/facilities";
-import { addUser, userLogin } from "@/api/handler/users";
+import { addUser, getAllUsers, userLogin } from "@/api/handler/users";
 import { authenticate } from "@/api/middleware/auth";
 import { refreshToken, revokeToken } from "@/api/handler/tokens";
 import { generateShifts, getMonthShifts } from "@/api/handler/shifts";
@@ -22,6 +22,7 @@ v1Routes.post("/login", userLogin);
 
 // private
 v1Routes.post("/users", authenticate, addUser);
+v1Routes.get("/users", authenticate, getAllUsers);
 
 v1Routes.post("/refresh", refreshToken);
 v1Routes.post("/revoke", revokeToken);

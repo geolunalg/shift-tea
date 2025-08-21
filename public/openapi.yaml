@@ -3,41 +3,46 @@ info:
   title: simple-scheduler API
   version: 1.0.0
   description: API documentation converted from Postman collection.
+
 servers:
   - url: http://localhost:8080/api/v1
-    description: Local development server
 
 paths:
   /:
     get:
-      summary: Base API endpoint
+      summary: root "/api/v1"
       responses:
         '200':
           description: API root
-
-  /docs.json:
-    get:
-      summary: Get OpenAPI JSON documentation
-      description: Returns the OpenAPI specification in JSON format from the server.
-      responses:
-        '200':
-          description: OpenAPI JSON successfully returned
-          content:
-            application/json:
-              schema:
-                type: object
-                description: The OpenAPI specification JSON
-
+          
   /healthz:
     get:
       summary: Check if server is ready
       responses:
         '200':
           description: Server is healthy
+          content:
+            application/json:
+              example:
+                status: "ok"
+
+  /docs.json:
+    get:
+      summary: Get API docs (json format)
+      responses:
+        '200':
+          description: API docs JSON
+          content:
+            application/json:
+              example:
+                openapi: "3.0.3"
+                info:
+                  title: "simple-scheduler API"
+                  version: "1.0.0"
 
   /facilities:
     post:
-      summary: Add a facility
+      summary: Add a facility with admin user
       requestBody:
         required: true
         content:
@@ -48,35 +53,37 @@ paths:
                 facility:
                   type: object
                   properties:
-                    facilityName:
-                      type: string
-                      example: acmy
+                    facilityName: { type: string }
                 user:
                   type: object
                   properties:
-                    firstName:
-                      type: string
-                      example: Nick
-                    lastName:
-                      type: string
-                      example: Furry
-                    email:
-                      type: string
-                      format: email
-                      example: nick@email.com
-                    password:
-                      type: string
-                      example: myPassword
-                    isAdmin:
-                      type: boolean
-                      example: true
+                    firstName: { type: string }
+                    lastName: { type: string }
+                    email: { type: string, format: email }
+                    password: { type: string }
+                    isAdmin: { type: boolean }
+            example:
+              facility:
+                facilityName: "The Evengers"
+              user:
+                firstName: "Nick"
+                lastName: "Furry"
+                email: "nick@email.com"
+                password: "myPassword"
+                isAdmin: true
       responses:
         '201':
-          description: Facility created successfully
+          description: Facility created
+          content:
+            application/json:
+              example:
+                facilityId: "fac-1234"
+                facilityName: "The Evengers"
+                adminUserId: "usr-5678"
 
   /login:
     post:
-      summary: Login
+      summary: Login user
       requestBody:
         required: true
         content:
@@ -84,20 +91,23 @@ paths:
             schema:
               type: object
               properties:
-                email:
-                  type: string
-                  format: email
-                  example: nick@email.com
-                password:
-                  type: string
-                  example: myPassword
+                email: { type: string, format: email }
+                password: { type: string }
+            example:
+              email: "nick@email.com"
+              password: "myPassword"
       responses:
         '200':
-          description: Returns access and refresh tokens
+          description: Login success (returns access & refresh tokens)
+          content:
+            application/json:
+              example:
+                token: "eyJhbGciOiJIUzI1NiIsInR..."
+                refresh: "eyJhbGciOiJIUzI1NiIsInR..."
 
   /users:
     post:
-      summary: Add user
+      summary: Add new user
       security:
         - bearerAuth: []
       requestBody:
@@ -107,22 +117,46 @@ paths:
             schema:
               type: object
               properties:
-                firstName:
-                  type: string
-                  example: berry
-                lastName:
-                  type: string
-                  example: allan
-                email:
-                  type: string
-                  format: email
-                  example: berry@dcu.com
-                isAdmin:
-                  type: boolean
-                  example: false
+                firstName: { type: string }
+                lastName: { type: string }
+                email: { type: string, format: email }
+                isAdmin: { type: boolean }
+            example:
+              firstName: "Natasha"
+              lastName: "Romanoff"
+              email: "natasha@example.com"
+              isAdmin: false
       responses:
         '201':
-          description: User created successfully
+          description: User created
+          content:
+            application/json:
+              example:
+                userId: "791bdbba-0fa3-4fb2-8fa5-ef3e08fb26b8"
+                firstName: "Natasha"
+                lastName: "Romanoff"
+                email: "natasha@example.com"
+                isAdmin: false
+    get:
+      summary: Get all users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              example:
+                - userId: "791bdbba-0fa3-4fb2-8fa5-ef3e08fb26b8"
+                  firstName: "Natasha"
+                  lastName: "Romanoff"
+                  email: "natasha@example.com"
+                  isAdmin: false
+                - userId: "6c882ce2-d747-4766-b282-8cf97fb789cf"
+                  firstName: "Steve"
+                  lastName: "Rogers"
+                  email: "steve@example.com"
+                  isAdmin: true
 
   /refresh:
     post:
@@ -131,7 +165,11 @@ paths:
         - bearerAuth: []
       responses:
         '200':
-          description: Returns new access token
+          description: New access token
+          content:
+            application/json:
+              example:
+                token: "eyJhbGciOiJIUzI1NiIsInR..."
 
   /revoke:
     post:
@@ -139,8 +177,8 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        '200':
-          description: Token revoked successfully
+        '204':
+          description: Token revoked
 
   /shifts:
     post:
@@ -154,41 +192,50 @@ paths:
             schema:
               type: object
               properties:
-                year:
-                  type: integer
-                  example: 2025
-                month:
-                  type: integer
-                  example: 7
+                year: { type: integer }
+                month: { type: integer }
                 shifts:
                   type: array
                   items:
                     type: object
                     properties:
-                      startTime:
-                        type: string
-                        example: "08:00"
-                      endTime:
-                        type: string
-                        example: "12:00"
+                      startTime: { type: string }
+                      endTime: { type: string }
                       staff:
                         type: array
                         items:
                           type: object
                           properties:
-                            userId:
-                              type: string
-                              format: uuid
-                              example: d558903d-24f2-4b26-baf4-1ee8a7b897b0
+                            userId: { type: string, format: uuid }
                             days:
                               type: array
-                              items:
-                                type: integer
-                                example: 1
+                              items: { type: integer }
+            example:
+              year: 2025
+              month: 7
+              shifts:
+                - startTime: "08:00"
+                  endTime: "12:00"
+                  staff:
+                    - userId: "791bdbba-0fa3-4fb2-8fa5-ef3e08fb26b8"
+                      days: [1,2,3,4,7,8,9,10]
+                    - userId: "6c882ce2-d747-4766-b282-8cf97fb789cf"
+                      days: [9,10,11,12,15,16,17,18]
+                - startTime: "12:00"
+                  endTime: "16:00"
+                  staff:
+                    - userId: "4ad59cfd-0693-4685-91e0-824c53d81869"
+                      days: [12,13,14,15,18,19,20,21]
+                    - userId: "7bc03ee0-6fa8-40ff-ad03-a6e4a8fc58b5"
+                      days: [16,17,18,19,22,23,24,25]
       responses:
         '201':
-          description: Shifts created successfully
-
+          description: Shifts created
+          content:
+            application/json:
+              example:
+                shiftBatchId: "shf-batch-2025-07"
+                created: true
     get:
       summary: Get current month shifts
       security:
@@ -197,18 +244,29 @@ paths:
         - name: year
           in: query
           required: false
-          schema:
-            type: integer
-          example: 2025
+          schema: { type: integer }
         - name: month
           in: query
           required: false
-          schema:
-            type: integer
-          example: 7
+          schema: { type: integer }
       responses:
         '200':
-          description: Returns shifts for the given month
+          description: Shifts list
+          content:
+            application/json:
+              example:
+                - shiftId: "shf-123"
+                  startTime: "08:00"
+                  endTime: "12:00"
+                  staff:
+                    - userId: "791bdbba-0fa3-4fb2-8fa5-ef3e08fb26b8"
+                      days: [1,2,3,4,7,8,9,10]
+                - shiftId: "shf-124"
+                  startTime: "12:00"
+                  endTime: "16:00"
+                  staff:
+                    - userId: "7bc03ee0-6fa8-40ff-ad03-a6e4a8fc58b5"
+                      days: [16,17,18,19,22,23,24,25]
 
 components:
   securitySchemes:
