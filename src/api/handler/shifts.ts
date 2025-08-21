@@ -41,8 +41,8 @@ export async function generateShifts(req: Request, res: Response) {
   const facilityId = facility.id!; // this guranteed to be defined by this point
 
   const params: ShiftsParams = req.body;
-  if (params.month < 0 || params.month > 12) {
-    throw new BadRequestError("Months must be index 0-11: Jan=0 | Dec=11");
+  if (params.month < 1 || params.month > 12) {
+    throw new BadRequestError("Months must be between 1 and 12");
   }
 
   const shiftMembers: ShiftMember[] = [];
@@ -113,10 +113,11 @@ async function getUserShift(shift: Shift) {
 async function prepareMemberShifts(member: ShiftMember) {
   const dates = new Set<Date>();
 
-  const daysInMonth = new Date(member.year, member.month, 0).getDate();
+  const month = new Date(member.year, member.month, 0);
+  const daysInMonth = month.getDate();
   for (const day of member.days) {
     if (day >= 1 && day <= daysInMonth) {
-      const date = new Date(member.year, member.month, day);
+      const date = new Date(member.year, month.getMonth(), day);
       dates.add(date);
     }
   }
@@ -163,7 +164,7 @@ export async function getMonthShifts(req: Request, res: Response) {
     : today.getFullYear();
   const currMonth = req.query.month
     ? Number(req.query.month)
-    : today.getMonth();
+    : today.getMonth() + 1; // add 1 because `new Date` is 0 index
 
   const facility = await getLoggedInUserFacility(req);
   const facilityId = facility.id!; // this guranteed to be defined by this point

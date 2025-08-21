@@ -84,6 +84,9 @@ describe("generateShifts", () => {
   it("throws BadRequestError if month is out of range", async () => {
     req.body = { year: 2024, month: 13, shifts: [] };
     await expect(generateShifts(req, res)).rejects.toThrow(BadRequestError);
+
+    req.body = { year: 2024, month: 0, shifts: [] };
+    await expect(generateShifts(req, res)).rejects.toThrow(BadRequestError);
   });
 
   it("throws BadRequestError if shift not found or created", async () => {
