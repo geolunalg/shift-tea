@@ -17,9 +17,9 @@ services:
       interval: 5s
       retries: 5
 
-  shift_tee:
-    image: geolunalg77/shift-tee:latest
-    container_name: shift-tee-server
+  shift_tea:
+    image: geolunalg77/shift-tea:latest
+    container_name: shift-tea-server
     environment:
       PORT: 8080
       PLATFORM: dev
