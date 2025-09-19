@@ -56,6 +56,10 @@ export async function userLogin(req: Request, res: Response) {
     throw new UserNotAuthenticatedError("User is not authenticated");
   }
 
+  res.cookie("token", refreshToken, {
+    httpOnly: true
+  });
+
   const userResponse: UserResponse = omitParams(user, ["password", "deleteAt"]);
   const loginResponse: LoginResponse = {
     ...userResponse,
